@@ -21,7 +21,20 @@ class Market
     @vendors.find_all do |vendor|
       vendor.inventory.has_key?(item)
     end
-  end 
+  end
 
+  def sorted_item_list
+    @vendors.map do |vendor|
+      vendor.inventory.keys
+    end.flatten.uniq.sort
+  end
 
+  def total_inventory
+    sorted_item_list.inject(Hash.new(0)) do |total, item|
+      @vendors.each do |vendor|
+        total[item] += vendor.inventory[item]
+      end
+      total
+    end
+  end
 end
