@@ -37,4 +37,28 @@ class Market
       total
     end
   end
+
+  def sell(item, quantity)
+    if total_inventory[item] >= quantity
+      adjust_inventory(item, quantity)
+      true
+    else
+      false
+    end
+  end
+
+  def adjust_inventory(item, quantity)
+    @vendors.each do |vendor|
+      if vendor.inventory.has_key?(item)
+        if vendor.inventory[item] >= quantity
+          vendor.inventory[item] -= quantity
+          break
+        elsif
+          quantity -= vendor.inventory[item]
+          vendor.inventory[item] = 0
+        end
+      end
+    end
+  end
+
 end
